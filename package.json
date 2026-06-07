@@ -1,0 +1,18 @@
+{
+  "name": "clarity-vault",
+  "version": "1.0.0",
+  "description": "A privacy-first browser extension that captures, cleans, and organizes your clipboard. 100% local — no servers, no accounts.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/test-utils.js",
+    "package:chrome": "bash scripts/package.sh chrome",
+    "package:firefox": "bash scripts/package.sh firefox",
+    "clean": "rm -rf dist/"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["browser-extension", "clipboard", "privacy", "local-first", "chrome-extension", "manifest-v3"],
+  "license": "MIT"
+}

@@ -1,0 +1,69 @@
+{
+  "manifest_version": 3,
+  "name": "Clarity Vault — CopySphere",
+  "version": "1.0.0",
+  "description": "Anything you copy becomes clean, summarized, and searchable. Optional on-page clarity labels. 100% local & private.",
+  
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "content/copy-listener.js"
+      ],
+      "css": [
+        "content/inject.css"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "options_ui": {
+    "page": "options/index.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "16": "assets/favicon-96x96.png",
+    "32": "assets/favicon-96x96.png",
+    "48": "assets/web-app-manifest-192x192.png",
+    "128": "assets/web-app-manifest-192x192.png"
+  },
+  "action": {
+    "default_title": "Clarity Vault",
+    "default_popup": "popup/index.html",
+    "default_icon": {
+      "16": "assets/favicon-96x96.png",
+      "32": "assets/favicon-96x96.png"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "content/inject.css",
+        "assets/*",
+        "models/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "clarity-vault@copysphere.local",
+      "strict_min_version": "109.0"
+    }
+  }
+}
