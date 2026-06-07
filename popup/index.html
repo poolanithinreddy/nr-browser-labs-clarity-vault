@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clarity Vault</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top">
+    <span class="logo-mark" aria-hidden="true">◈</span>
+    <h1>Clarity Vault</h1>
+    <input id="quickSearch" class="search" type="search" placeholder="Search clips…" autocomplete="off" spellcheck="false" />
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button data-tab="recent"   class="active" role="tab" aria-selected="true">Recent</button>
+    <button data-tab="vault"    role="tab" aria-selected="false">Vault</button>
+    <button data-tab="summary"  role="tab" aria-selected="false">Summary</button>
+    <button data-tab="analyze"  role="tab" aria-selected="false">Analyze</button>
+    <button data-tab="settings" role="tab" aria-selected="false">Settings</button>
+  </nav>
+
+  <main class="body-scroll">
+    <section id="tab-recent"   class="tab active" role="tabpanel"></section>
+    <section id="tab-vault"    class="tab"         role="tabpanel"></section>
+
+    <!--
+      Summary tab: static structure so renderSummary() can safely query
+      and update #summaryText / #summaryOriginal without destroying them.
+      The empty-state and content panels are toggled with .hidden.
+    -->
+    <section id="tab-summary" class="tab" role="tabpanel">
+      <div id="summary-empty" class="empty hidden">
+        <strong>No clip selected</strong>
+        Click any clip in Recent or Vault to view its summary here.
+      </div>
+      <div id="summary-content" class="card summary-card hidden">
+        <div class="summary-header">
+          <h3 class="summary-title">Local Summary</h3>
+          <span class="badge-local">Extractive · On-device</span>
+        </div>
+        <div id="summaryText" class="summary-body"></div>
+        <div class="summary-actions">
+          <button id="copyClean"    class="btn primary">Copy summary</button>
+          <button id="copyOriginal" class="btn">Copy original</button>
+        </div>
+        <details class="original-section">
+          <summary class="section-title">▸ Original text</summary>
+          <div id="summaryOriginal" class="original-box"></div>
+        </details>
+      </div>
+    </section>
+
+    <section id="tab-analyze"  class="tab" role="tabpanel"></section>
+    <section id="tab-settings" class="tab" role="tabpanel"></section>
+  </main>
+
+  <footer class="foot">
+    <small>Stored locally on this device &middot; No servers &middot; No accounts</small>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
