@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clarity Vault — Settings</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+
+    <header class="page-header">
+      <div class="header-inner">
+        <span class="logo-mark" aria-hidden="true">◈</span>
+        <div>
+          <h1>Clarity Vault</h1>
+          <p class="tagline">Settings &amp; Privacy</p>
+        </div>
+      </div>
+      <div id="status-banner" class="status-banner hidden"></div>
+    </header>
+
+    <main class="container">
+
+      <!-- Privacy statement — always first -->
+      <section class="section" id="privacy">
+        <h2 class="section-title">Privacy</h2>
+        <div class="privacy-box">
+          <div class="privacy-row">
+            <span class="privacy-icon">🔒</span>
+            <div>
+              <strong>100% local storage</strong>
+              <p>Every clip is stored in <code>chrome.storage.local</code> on this device only. Nothing leaves your browser.</p>
+            </div>
+          </div>
+          <div class="privacy-row">
+            <span class="privacy-icon">🚫</span>
+            <div>
+              <strong>No servers · No accounts · No cloud sync</strong>
+              <p>There are no servers, no sign-in, and no telemetry of any kind.</p>
+            </div>
+          </div>
+          <div class="privacy-row">
+            <span class="privacy-icon">🧠</span>
+            <div>
+              <strong>On-device AI analysis</strong>
+              <p>Summaries (TextRank) and page labels (rule-based classifier) run entirely in your browser. No external AI API is used.</p>
+            </div>
+          </div>
+          <div class="privacy-row">
+            <span class="privacy-icon">🗑️</span>
+            <div>
+              <strong>You control your data</strong>
+              <p>Export everything as JSON or Markdown, or delete everything, at any time below.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Permissions explanation -->
+      <section class="section" id="permissions">
+        <h2 class="section-title">Why these permissions?</h2>
+        <div class="card">
+          <table class="perm-table">
+            <thead>
+              <tr><th>Permission</th><th>Why it is needed</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>storage</code></td>
+                <td>Saves clips, settings, and UI preferences locally in <code>chrome.storage.local</code>.</td>
+              </tr>
+              <tr>
+                <td><code>activeTab</code></td>
+                <td>Analyzes the page you are currently viewing when you click "Analyze this page".</td>
+              </tr>
+              <tr>
+                <td><code>scripting</code></td>
+                <td>Injects the page analyzer and copy listener scripts when you enable them.</td>
+              </tr>
+              <tr>
+                <td><code>contextMenus</code></td>
+                <td>Adds a "Save selection to Clarity Vault" option to the right-click menu.</td>
+              </tr>
+              <tr>
+                <td><code>host_permissions (&lt;all_urls&gt;)</code></td>
+                <td>
+                  Declared so the auto-capture content script can be registered at runtime.
+                  It is <em>only used</em> when you explicitly enable Auto-capture or run Analyze.
+                  It is never used silently in the background.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Appearance -->
+      <section class="section" id="appearance">
+        <h2 class="section-title">Appearance</h2>
+        <div class="card">
+          <div class="setting-row">
+            <div class="setting-label-group">
+              <label class="setting-label" for="opt-theme">Theme</label>
+              <span class="setting-desc">Controls the popup colour scheme.</span>
+            </div>
+            <select id="opt-theme" class="select">
+              <option value="system">System default</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Capture -->
+      <section class="section" id="capture">
+        <h2 class="section-title">Capture</h2>
+        <div class="card">
+          <div class="setting-row">
+            <div class="setting-label-group">
+              <label class="setting-label" for="opt-autoCapture">Auto-capture copies</label>
+              <span class="setting-desc">
+                Automatically saves every copy event on web pages.
+                Requires the <code>&lt;all_urls&gt;</code> host permission, which will be requested
+                when you enable this toggle.
+              </span>
+            </div>
+            <input id="opt-autoCapture" type="checkbox" />
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-label-group">
+              <label class="setting-label" for="opt-maxClips">Maximum clips stored</label>
+              <span class="setting-desc">Oldest clips are removed once this limit is reached (LRU cap). Range: 50–2000.</span>
+            </div>
+            <input id="opt-maxClips" type="number" class="num-input" min="50" max="2000" step="50" value="500" />
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-label-group">
+              <label class="setting-label" for="opt-autoSummarize">Auto-summarize long clips</label>
+              <span class="setting-desc">Generates a local TextRank summary for clips over ~400 characters.</span>
+            </div>
+            <input id="opt-autoSummarize" type="checkbox" />
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-label-group">
+              <label class="setting-label" for="opt-autoCleanUrls">Strip tracking parameters from URLs</label>
+              <span class="setting-desc">Removes <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>, and other tracking query params from saved source URLs.</span>
+            </div>
+            <input id="opt-autoCleanUrls" type="checkbox" />
+          </div>
+
+          <div class="setting-row setting-row--col">
+            <div class="setting-label-group">
+              <label class="setting-label" for="opt-ignoreList">Domain ignore list</label>
+              <span class="setting-desc">Clips from these domains are never saved. One domain per line (e.g. <code>ads.example.com</code>).</span>
+            </div>
+            <textarea id="opt-ignoreList" class="ignore-list" rows="4"
+              placeholder="example.com&#10;ads.tracker.io"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Data management -->
+      <section class="section" id="data">
+        <h2 class="section-title">Data management</h2>
+        <div class="card">
+          <div class="setting-row">
+            <div class="setting-label-group">
+              <span class="setting-label">Export all clips</span>
+              <span class="setting-desc">Download your full vault as a JSON or Markdown file.</span>
+            </div>
+            <div class="btn-group">
+              <button class="btn" id="opt-exportJson">JSON</button>
+              <button class="btn" id="opt-exportMd">Markdown</button>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-label-group">
+              <span class="setting-label">Import clips</span>
+              <span class="setting-desc">
+                Accepts a JSON file previously exported by Clarity Vault
+                (<code>{ version, exportedAt, clips[] }</code>).
+                Existing clips are preserved; duplicates are skipped.
+              </span>
+            </div>
+            <label class="btn" style="cursor:pointer">
+              Choose file
+              <input type="file" id="opt-importJson" accept="application/json" hidden />
+            </label>
+          </div>
+          <div id="import-status" class="status-msg hidden"></div>
+
+          <div class="setting-row">
+            <div class="setting-label-group">
+              <span class="setting-label">Delete all clips</span>
+              <span class="setting-desc">Permanently removes every clip from local storage. Settings are kept.</span>
+            </div>
+            <button class="btn danger" id="opt-clearAll">Delete all clips</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Diagnostics -->
+      <section class="section" id="diagnostics">
+        <h2 class="section-title">Diagnostics</h2>
+        <div class="card">
+          <div id="diag" class="diag-grid">
+            <span class="diag-loading">Loading…</span>
+          </div>
+          <div style="margin-top:12px">
+            <button class="btn" id="diag-refresh">Refresh</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="page-footer">
+      <span>Clarity Vault v<span id="ext-version">1.0.0</span></span>
+      <span>&middot;</span>
+      <span>MIT License</span>
+      <span>&middot;</span>
+      <a href="https://github.com/poolanithinreddy/nr-browser-labs-clarity-vault" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </footer>
+
+  </div><!-- /.page-shell -->
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
